@@ -44,7 +44,7 @@ void menuutama(){
 void djikstra(int G[V][V], int n, int startnode, int targetnode){
 	int cost[V][V], distance[V], pred[V];
 	int visited[V], count, mindistance, nextnode, i, j;
-	char kota[25][15] = {"Badung", "Bangli", "Buleleng", "Denpasar", "Gianyar", "Jembrana", "Karangasem", "Klungkung", "Tabanan"}, satu[99], dua[99];
+	char kota[10][11] = {"Badung", "Bangli", "Buleleng", "Denpasar", "Gianyar", "Jembrana", "Karangasem", "Klungkung", "Tabanan"}, satu[99], dua[99];
 	// printf("%s\n", kota[6]);
 	for(i=0; i<n; i++){
 		for(j=0; j<n; j++){
