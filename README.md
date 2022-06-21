@@ -1,8 +1,7 @@
-# FP-Strukdat
+# BOTAC
+## (Bali Online Transportation and Accomodation using C)
 
-## Program Name (blom)
-### TOMART (blom)
-#### TOMART merupakan Final Project E4 dengan tujuan yang dimana berupa aplikasi penjualan untuk memudahkan banyak orang membeli barang pada toko dengan hanya menggunakan sebuah program, dan mempermudah pihak toko dalam pengelolaan data stok. (blom)
+#### BOTAC merupakan Final Project kami yang berupa aplikasi pemesanan ojek via online (ojol). Project ini bertujuan agar dapat memudahkan proses pemesanan ojek dan juga memudahkan para pengendara ojek dalam mencari pelanggan.
 
 ## Code in 
 ![C](https://img.shields.io/badge/-C-05122A?style=for-the-badge&logo=C&logoColor=A8B9CC) 
