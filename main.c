@@ -1,8 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define V 10
-#define INFINITY 999
+#include <stdbool.h>
+#include "function.h"
+
+struct data {
+    char pass[25];
+    char name[25];
+    int saldo;
+};
+
+char userSekarang(char *username);
 
 int graph[V][V] = {{0, 36, 75, 15, 27, 0, 0, 0, 11},    // badung
 				   {36, 0, 97, 0, 24, 0, 44, 18, 0},    // bangli
@@ -14,127 +22,131 @@ int graph[V][V] = {{0, 36, 75, 15, 27, 0, 0, 0, 11},    // badung
                    {0, 18, 0, 0, 11, 0, 39, 0, 0},      // klungkung
                    {11, 0, 64, 0, 0, 72, 0, 0, 0}};     // tabanan
 
-void pembersih(){
-	#ifdef _WIN32
-		system("cls");
-	#else
-		system("clear");
-	#endif
-}
+int main() {
 
-void header(){
-	printf("================================================\n");
-	printf("                 TOKO JAYA ABADI                \n");
-	printf("             !Bukan Bangunan Biasa!             \n");
-	printf("================================================\n\n");
-}
-
-void menuutama(){
-	// printf("     Selamat  datang  di  GoGorengan.  Kami\n     karyawan  GoGorengan,  siap  melayani.\n     Pilih apa yang ingin  kamu lakukan ya!\n\n");
-	printf("     --------------------------------------     \n");
-	printf("     |             Menu Utama             |     \n");
-	printf("     --------------------------------------     \n");
-	printf("     |         [1] Pesan Gorengan         |     \n");
-	printf("     |         [2] Gopis                  |     \n");
-	printf("     |         [3] Tema                   |     \n");
-	printf("     --------------------------------------     \n\n");
-	printf("================================================\n\n");
-}
-
-void djikstra(int G[V][V], int n, int startnode, int targetnode){
-	int cost[V][V], distance[V], pred[V];
-	int visited[V], count, mindistance, nextnode, i, j;
-	char kota[10][11] = {"Badung", "Bangli", "Buleleng", "Denpasar", "Gianyar", "Jembrana", "Karangasem", "Klungkung", "Tabanan"}, satu[99], dua[99];
-	// printf("%s\n", kota[6]);
-	for(i=0; i<n; i++){
-		for(j=0; j<n; j++){
-			if(G[i][j]==0)
-				cost[i][j] = INFINITY;
-			else
-				cost[i][j] = G[i][j];
-		}
-	}
-	for(i=0; i<n; i++){
-		distance[i] = cost[startnode][i];
-		pred[i] = startnode;
-		visited[i] = 0;
-	}
-
-	// for(i=0;i<n;i++){
-	// 	printf("[%d][%d]\n", i,distance[i]);
-	// 	printf("%d-%d\n", i,pred[i]);
-	// }
-	
-	distance[startnode] = 0;
-	visited[startnode] = 1;
-	count = 1;
-	
-	while(count<n-1){
-		mindistance = INFINITY;
-		for(i=0; i<n; i++){
-			if(distance[i]<mindistance&&!visited[i]){
-				mindistance = distance[i];
-				nextnode = i;
-			}
-		}
-		visited[nextnode] = 1;
-		for(i=0; i<n; i++){
-			if(!visited[i]){
-				if(mindistance+cost[nextnode][i]<distance[i]){
-					distance[i] = mindistance+cost[nextnode][i];
-					pred[i] = nextnode;
+    char cari[80];
+    char choice, code[50];
+    struct data newItem;
+    FILE *cek = fopen("Logout.txt", "r+");
+    if(!cek){
+        insert_choice:
+        pembersih();
+        header();
+        menuAwal();
+        scanf(" %c", &choice);
+        fflush(stdin);
+        switch(choice) {
+            case '1':
+				if("Data-Base.csv"){
+					printf("\nBelum ada akun. Register dulu!\n");
+					pause();
+					goto insert_choice;
 				}
-			}
-		}
-		count++;
-	}
-  	int a, x=0, y[10], z=0;
-	const int kecepatan=40;
-	// char y[10];
-	for(i=0; i<n; i++){
-		// printf("tst");
-		if(i==targetnode){
-			printf("\nKota Asal       : %s", kota[startnode]);
-			printf("\nKota Tujuan     : %s", kota[i]);
-			printf("\nJarak Tempuh    : %d Km", distance[i]);
-			printf("\nKecepatan       : %d Km/j", kecepatan);
-			printf("\nRute Perjalanan : ");
-			
-			j = i;
-			do{
-				j = pred[j];
-				y[x] = j;
-				x++;
-			}while(j!=startnode);
-			for(int p=x-1; p>=0; p--){
-				z = y[p];
-				printf("%s -> ", kota[z]);
-			}
-			printf("%s", kota[targetnode]);
-			a = distance[i];
-			float b=a;
-			int c=(float)b/kecepatan;
-			b = b/kecepatan-c;
-			int d=(float)b*60;
-			if(a==0)
-				printf("\nEstimasi Waktu  : 15 Menit\n");
-			else if(c==0)
-				printf("\nEstimasi Waktu  : %d Menit\n", d);
-			else if(d==0)
-				printf("\nEstimasi Waktu  : %d Jam\n", c);
-			else
-				printf("\nEstimasi Waktu  : %d Jam %d Menit\n", c,d);
-		}
-	}
+				else{
+					login("Data-Base.csv");
+					goto lanjut;
+				}
+                break;
+            case '2':
+                addAkun("Data-Base.csv");
+                pause();
+                goto lanjut;
+                break;
+            case '3':
+                exit(0);
+            default:
+                goto insert_choice;
+                break;
+        }
+        fclose(cek);
+    }
+    else{
+        lanjut:
+        fclose(cek);
+        char username[25];
+        FILE *fp = fopen("Logout.txt", "r+");
+        fgets(username, sizeof(username), fp);
+        fclose(fp);
+        userSekarang(username);
+    }
+    return 0;
 }
 
-int main(){
-	pembersih();
-	header();
-	menuutama();
-	int tujuan;
-	printf("1. Badung\n2. Bangli\n3. Buleleng\n4. Denpasar\n5. Gianyar\n6. Jembrana\n7. Karangasem\n8. Klungkung\n9. Tabanan\n");
-	scanf("%d", &tujuan);
-	tujuan -= 1;
-    djikstra(graph, V, 3, tujuan);
+char userSekarang(char *username){
+    menu_utama:
+    pembersih();
+    header();
+    menuUtama(username);
+    char menu;
+    fflush(stdin);
+    scanf("%c", &menu);
+    
+    switch(menu){
+        case '1':
+            pembersih();
+            header();
+            char tambah_saldo;
+            cekSaldo("Data-Base.csv", username, 1);
+            kembali_saldo:
+            printf("\nIngin tambah saldo? [y/t] : ");
+            fflush(stdin);
+            scanf("%c", &tambah_saldo);
+            if(tambah_saldo == 'Y' || tambah_saldo == 'y') {
+                int plus, hasil;
+                char tambah;
+                hasil = (cekSaldo("Data-Base.csv", username, 2));
+                printf("\nMasukkan jumlah saldo yang ingin ditambahkan : ");
+	            scanf("%d", &plus);
+                plus = hasil + plus;
+                updateSaldo("Data-Base.csv", username, plus);
+                printf("\nSaldo berhasil ditambahkan\n");
+                getchar();
+                pause();
+                goto menu_utama;
+            }
+            else if(tambah_saldo == 'T' || tambah_saldo == 't') goto menu_utama;
+            else {
+                printf("\nPilihan anda salah");
+                goto kembali_saldo;
+            }
+            break;
+        case '2':
+            pembersih();
+            header();
+            destinasi();
+            int awal, tujuan;
+            printf("\nPilih lokasi anda sekarang : ");
+            scanf("%d", &awal);
+            printf("Pilih lokasi tujuan : ");
+            scanf("%d", &tujuan);
+            fflush(stdin);
+            awal -= 1;
+            tujuan -= 1;
+            pesan(graph, 10, awal, tujuan, "Data-Base.csv", username);
+            kembali_pesan:
+            printf("\nIngin kembali ke menu? [y/t]\n>> ");
+            char kembali_pesan;
+            fflush(stdin);
+            scanf("%c", &kembali_pesan);
+            fflush(stdin);
+            if(kembali_pesan == 'y' || kembali_pesan == 'Y') goto menu_utama;
+            else if(kembali_pesan == 't' || kembali_pesan == 't') exit(0);
+            else {
+                printf("\nPilihan anda salah");
+                goto kembali_pesan;
+            }
+            break;
+        case '3':
+            remove("Logout.txt");
+            printf("\nLogout berhasil\n");
+            getchar();
+            pause();
+            return main();
+            break;
+        case '4':
+            exit(0);
+            break;
+        default:
+            goto menu_utama;
+    }
 }
