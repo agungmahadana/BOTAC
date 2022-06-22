@@ -16,7 +16,8 @@ void header();
 void menuAwal();
 void login(char *file);
 void addAkun(char *file);
-bool cekAkun(char *file, char *name2);
+bool cekAkun(char *file, char *name);
+bool cekSandi(char *file, char *name, char *pass);
 void menuUtama(char *username);
 void destinasi();
 void pesan(int G[V][V], int n, int startnode, int targetnode, char *file, char *username);
@@ -42,27 +43,23 @@ void login(char *file){
 	start:
 	pembersih();
 	header();
-	char id[25], sandi[25];
+	char id[25];
 	printf("\nUser Name : ");
 	gets(id);
 	if(!cekAkun(file, id)){
-		printf("Password : ");
-		gets(sandi);
-
 		konfirmasi_sandi:
-        printf("Konfirmasi password : ");
-        char resandi[25];
-        gets(resandi);
-
-        if(strcmp(sandi, resandi) != 0) {
-            printf("\nKonfirmasi password salah\n");
-            goto konfirmasi_sandi;
-        }
-        else {
-            main_db = fopen("Logout.txt", "a+");
+		printf("Password : ");
+		char sandi[25];
+		gets(sandi);
+		if(cekSandi(file, id, sandi) == 0){
+			printf("\nPassword salah\n");
+			goto konfirmasi_sandi;
+		}
+		else{
+			main_db = fopen("Logout.txt", "a+");
             fprintf(main_db, "%s", id);
 			fclose(main_db);
-        }
+		}
 	}
 	else{
 		printf("\nUser Name salah\n");
@@ -115,16 +112,42 @@ void addAkun(char *file){
     }
 }
 
-bool cekAkun(char *file, char *name2) {
+bool cekAkun(char *file, char *name) {
     bool status = true;
     main_db = fopen(file, "r+");
-	char checking[25];
-	strcpy(checking, name2);
+	char checking[25], check[25], enter[] = "\n";
+	strcpy(checking, name);
+	strcpy(check, name);
+	strcat(check, enter);
     while(fgets(buffer, sizeof(buffer), main_db)) {
         if(strstr(buffer, checking) != 0) {
-            status = false;
+            if(strcmp(check, buffer) == 0) status = false;
             break;
         }
+    }
+    return status;
+    fclose(main_db);
+}
+
+bool cekSandi(char *file, char *name, char *pass){
+	bool status = true;
+    main_db = fopen(file, "r+");
+	int count=0;
+	char checking[25], check[25], enter[] = "\n";
+	strcpy(checking, name);
+	strcpy(check, pass);
+	strcat(check, enter);
+    while(fgets(buffer, sizeof(buffer), main_db)) {
+        if(strstr(buffer, checking) != 0) {
+            count = 3;
+        }
+		if(count == 2){
+			if(strcmp(check, buffer) != 0){
+				status = false;
+				break;
+			}
+		}
+		count--;
     }
     return status;
     fclose(main_db);
