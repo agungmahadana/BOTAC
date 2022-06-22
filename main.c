@@ -27,7 +27,7 @@ int main() {
     char cari[80];
     char choice, code[50];
     struct data newItem;
-    FILE *cek = fopen("Logout.txt", "r+");
+    FILE *cek = fopen("Logout.txt", "r+"), *open;
     if(!cek){
         insert_choice:
         pembersih();
@@ -37,14 +37,15 @@ int main() {
         fflush(stdin);
         switch(choice) {
             case '1':
-				if("Data-Base.csv"){
+				if(open = fopen("Data-Base.csv", "r")){
+                    fclose(open);
+					login("Data-Base.csv");
+					goto lanjut;
+				}
+				else{
 					printf("\nBelum ada akun. Register dulu!\n");
 					pause();
 					goto insert_choice;
-				}
-				else{
-					login("Data-Base.csv");
-					goto lanjut;
 				}
                 break;
             case '2':

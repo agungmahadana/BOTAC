@@ -16,7 +16,7 @@ void header();
 void menuAwal();
 void login(char *file);
 void addAkun(char *file);
-bool cekAkun(char *file, char *name, char *name2);
+bool cekAkun(char *file, char *name2);
 void menuUtama(char *username);
 void destinasi();
 void pesan(int G[V][V], int n, int startnode, int targetnode, char *file, char *username);
@@ -45,7 +45,7 @@ void login(char *file){
 	char id[25], sandi[25];
 	printf("\nUser Name : ");
 	gets(id);
-	if(!cekAkun(file, id, id)){
+	if(!cekAkun(file, id)){
 		printf("Password : ");
 		gets(sandi);
 
@@ -80,7 +80,7 @@ void addAkun(char *file){
     fflush(stdin);
     gets(akun.name);
 
-    if(cekAkun("Data-Base.csv", akun.name, akun.name)) {
+    if(cekAkun("Data-Base.csv", akun.name)) {
         printf("Password : ");
         fflush(stdin);
         gets(akun.pass);
@@ -115,7 +115,7 @@ void addAkun(char *file){
     }
 }
 
-bool cekAkun(char *file, char *name, char *name2) {
+bool cekAkun(char *file, char *name2) {
     bool status = true;
     main_db = fopen(file, "r+");
 	char checking[25];
