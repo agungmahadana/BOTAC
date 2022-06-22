@@ -24,8 +24,7 @@ int graph[V][V] = {{0, 36, 75, 15, 27, 0, 0, 0, 11},    // badung
 
 int main() {
 
-    char cari[80];
-    char choice, code[50];
+    char choice;
     struct data newItem;
     FILE *cek = fopen("Logout.txt", "r+"), *open;
     if(!cek){
@@ -33,7 +32,7 @@ int main() {
         pembersih();
         header();
         menuAwal();
-        scanf(" %c", &choice);
+        scanf("%c", &choice);
         fflush(stdin);
         switch(choice) {
             case '1':
