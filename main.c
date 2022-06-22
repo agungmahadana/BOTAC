@@ -23,7 +23,6 @@ int graph[V][V] = {{0, 36, 75, 15, 27, 0, 0, 0, 11},    // badung
                    {11, 0, 64, 0, 0, 72, 0, 0, 0}};     // tabanan
 
 int main() {
-    
     char choice;
     struct data newItem;
     FILE *cek = fopen("Logout.txt", "r+"), *open;
