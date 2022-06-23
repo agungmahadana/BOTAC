@@ -7,7 +7,7 @@ struct Data {
     char name[25];
     char pass[25];
     int saldo;
-    struct Data *next;
+    struct Data *next, *prev;
 };
 
 char buffer[100];
@@ -202,7 +202,8 @@ void pesan(int G[V][V], int n, int startnode, int targetnode, char *file, char *
 		}
 		count++;
 	}
-  	int a, x=0, y[10], z=0, tarif=3000;
+	struct Data *baru, *head=NULL, *tail, *tampil;
+  	int a, tarif=3000;
 	const int kecepatan=40;
 	for(i=0; i<n; i++){
 		if(i==targetnode){
@@ -211,16 +212,28 @@ void pesan(int G[V][V], int n, int startnode, int targetnode, char *file, char *
 			printf("\nJarak Tempuh    : %d Km", distance[i]);
 			printf("\nKecepatan       : %d Km/j", kecepatan);
 			printf("\nRute Perjalanan : ");
-			
 			j = i;
 			do{
 				j = pred[j];
-				y[x] = j;
-				x++;
+				baru = malloc(sizeof(struct Data));
+				baru->saldo = j;
+				baru->next = NULL;
+				if(head==NULL){
+					head = baru;
+					head->prev = NULL;
+					tail = head;
+				}
+				else{
+					baru->prev = tail;
+					tail->next = baru;
+					tail = baru;
+				}
 			}while(j!=startnode);
-			for(int p=x-1; p>=0; p--){
-				z = y[p];
-				printf("%s -> ", kota[z]);
+			tampil = tail;
+			while(tampil != NULL){
+				printf("%s", kota[tampil->saldo]);
+				printf(" -> ");
+				tampil = tampil->prev;
 			}
 			printf("%s", kota[targetnode]);
 			a = distance[i];
